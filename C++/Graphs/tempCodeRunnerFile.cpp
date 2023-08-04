@@ -1,0 +1,1 @@
+addedge(adj,0,5);

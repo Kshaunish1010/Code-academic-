@@ -1,0 +1,54 @@
+import numpy as np 
+import matplotlib.pyplot as plt 
+import numpy.random as nr
+from scipy.stats import norm 
+
+B=10000000
+SNRdB=np.arange(0,14.1,1)
+SNR=10**(SNRdB/10)
+BER=np.zeros(np.size(SNRdB))
+#sys=2*(nr.randint(0,2,B))-1
+sys=nr.randint(0,2,B)
+noise=nr.normal(0,1,B)
+for k in range(np.size(SNRdB)):
+    Tx=np.sqrt(SNR[k])*sys
+    Rx=noise+Tx
+    #Dec=2*(Rx>0)-1
+    Dec=Rx>np.sqrt(SNR[k]/2)
+    BER[k]=BER[k]+np.sum(Dec!=sys)
+BER=BER/B
+plt.yscale('log')
+plt.plot(SNRdB,BER,'g-')
+#plt.plot(SNRdB,1-norm.cdf(np.sqrt(SNR)),'ro')
+plt.plot(SNRdB,1-norm.cdf(np.sqrt(SNR/2)),'ro')
+plt.grid(2,which='both')
+plt.xlabel('SNR(db)')
+plt.ylabel('BER')
+#plt.suptitle("BPSK BER with AWGN ")
+plt.suptitle("ASK BER with AWGN ")
+plt.plot()
+plt.show()
+'''
+f=5
+n=np.arange(-10,20)
+x=np.arange(-.03,0.3,0.01)
+y=np.sin(2*np.pi*f*x)
+plt.axhline(y=0,color='r')
+
+plt.subplot(2,2,2)
+plt.plot(x,y)
+w=np.cos(2*np.pi*f*x)
+plt.subplot(2,1,2)
+plt.plot(x,w)
+plt.show()
+
+l=np.size(n)
+stem=np.zeros(l)
+ind=np.where(n>=0)
+stem[ind]=n[ind]
+plt.stem(n,stem)
+plt.xlabel('time')
+plt.ylabel('amplitude')
+plt.title('step')
+plt.show()
+'''
